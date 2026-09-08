@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>X-ACU | Acupuncture & Traditional Chinese Medicine</title>
-  <meta name="description" content="X-ACU - Acupuncture and Traditional Chinese Medicine in Sale, Manchester.">
+
+  <meta
+    name="description"
+    content="X-ACU - Acupuncture and Traditional Chinese Medicine in Sale, Manchester."
+  >
+
   <style>
     body {
       margin: 0;
@@ -46,6 +52,11 @@
       border-radius: 4px;
       font-size: 15px;
       letter-spacing: 1px;
+      transition: opacity 0.2s ease;
+    }
+
+    .button:hover {
+      opacity: 0.8;
     }
 
     section {
@@ -65,10 +76,43 @@
       font-size: 17px;
     }
 
+    .services {
+      margin-top: 30px;
+    }
+
+    .service {
+      padding: 22px 15px;
+      margin: 15px auto;
+      max-width: 500px;
+      background: #ffffff;
+      border-radius: 6px;
+    }
+
+    .service-name {
+      font-size: 19px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .service-price {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .service-note {
+      font-size: 14px;
+      color: #777;
+    }
+
     footer {
       padding: 40px 20px;
       background: #1d1d1b;
       color: white;
+    }
+
+    footer p {
+      color: #ccc;
+      font-size: 14px;
     }
 
     footer a {
@@ -76,12 +120,31 @@
       margin: 0 10px;
       text-decoration: none;
     }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 60px 20px 40px;
+      }
+
+      .logo {
+        font-size: 42px;
+      }
+
+      .tagline {
+        font-size: 18px;
+      }
+
+      section {
+        padding: 45px 20px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
   <header>
+
     <div class="logo">X-ACU</div>
 
     <div class="tagline">
@@ -92,59 +155,136 @@
       Wednesday appointments at ACU Health, Sale
     </div>
 
-    <a class="button" href="https://acuhealth.setmore.com/team/4r0qELCAYZSN67KamDvmcfgqS2NHxw1c"> 
+    <!-- X-ACU Booking System -->
+    <a class="button" href="/booking.html">
       BOOK AN APPOINTMENT
     </a>
+
   </header>
 
+
   <section>
+
     <h2>Treatments</h2>
+
     <p>
       Personalised acupuncture and traditional Chinese medicine care,
       tailored to your individual needs.
     </p>
+
+    <div class="services">
+
+      <div class="service">
+        <div class="service-name">
+          Acupuncture
+        </div>
+
+        <div class="service-price">
+          £60
+        </div>
+
+        <div class="service-note">
+          Appointment approximately 60–90 minutes
+        </div>
+      </div>
+
+
+      <div class="service">
+        <div class="service-name">
+          Massage · 30 minutes
+        </div>
+
+        <div class="service-price">
+          £35
+        </div>
+      </div>
+
+
+      <div class="service">
+        <div class="service-name">
+          Massage · 60 minutes
+        </div>
+
+        <div class="service-price">
+          £65
+        </div>
+      </div>
+
+    </div>
+
   </section>
 
+
   <section>
+
     <h2>About X-ACU</h2>
+
     <p>
       X-ACU is an independent acupuncture and traditional Chinese medicine
       brand based in Greater Manchester.
     </p>
+
   </section>
 
+
   <section>
+
     <h2>Clinic</h2>
+
     <p>
       Consultations are currently available every Wednesday at
       ACU Health in Sale.
     </p>
+
   </section>
 
+
   <section id="contact">
+
     <h2>Contact</h2>
+
     <p>
       For appointments and enquiries, please get in touch.
     </p>
 
-    <a class="button" href="https://wa.me/447741336819">
+    <a
+      class="button"
+      href="https://wa.me/447741336819"
+    >
       CONTACT ON WHATSAPP
     </a>
+
   </section>
 
+
   <footer>
+
     <div>
       <strong>X-ACU</strong>
     </div>
 
-    <p style="color: #ccc; font-size: 14px;">
+    <p>
       Acupuncture · Traditional Chinese Medicine
     </p>
 
     <div>
-      <a href="https://www.instagram.com/cherub_xu/">Instagram</a>
-      <a href="https://www.tiktok.com/@x.acu">TikTok</a>
+      <a
+        href="https://www.instagram.com/cherub_xu/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Instagram
+      </a>
+
+      <a
+        href="https://www.tiktok.com/@x.acu"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        TikTok
+      </a>
     </div>
+
   </footer>
 
 </body>
