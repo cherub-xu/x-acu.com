@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book an Appointment | X-ACU</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f5f1;
+      margin: 0;
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .intro {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 14px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #message {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Book an Appointment</h1>
+
+    <p class="intro">
+      Please complete the form below and we will contact you to confirm your appointment.
+    </p>
+
+    <form id="bookingForm">
+
+      <label for="name">Name *</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone *</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <label for="type">Appointment Type *</label>
+      <select id="type" name="type" required>
+        <option value="">Please select</option>
+        <option value="Acupuncture Consultation & Treatment">
+          Acupuncture Consultation & Treatment
+        </option>
+        <option value="Follow-up Acupuncture">
+          Follow-up Acupuncture
+        </option>
+      </select>
+
+      <label for="date">Preferred Date *</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="time">Preferred Time *</label>
+      <input type="time" id="time" name="time" required>
+
+      <label for="notes">Message / Notes</label>
+      <textarea id="notes" name="notes"></textarea>
+
+      <button type="submit">Book Appointment</button>
+
+    </form>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("bookingForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      message.textContent = "Sending...";
+
+      try {
+        const response = await fetch("/api/book", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          message.textContent =
+            "Thank you. Your booking request has been received. We will contact you to confirm your appointment.";
+          form.reset();
+        } else {
+          message.textContent =
+            "Sorry, something went wrong. Please try again.";
+        }
+
+      } catch (error) {
+        message.textContent =
+          "Sorry, something went wrong. Please try again.";
+      }
+    });
+  </script>
+</body>
+</html>
