@@ -94,11 +94,15 @@ ${notes}
       }
     }
 
-    return new Response("X-ACU Worker is running", {
-      headers: {
-        "content-type": "text/plain"
-      }
-    });
+    const page = await fetch(
+  "https://raw.githubusercontent.com/cherub-xu/x-acu.com/main/booking.html"
+);
+
+return new Response(page.body, {
+  headers: {
+    "content-type": "text/html; charset=UTF-8"
+  }
+});
   }
 };
 
