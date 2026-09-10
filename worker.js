@@ -2,7 +2,6 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Test endpoint
     if (url.pathname === "/api/test") {
       return Response.json({
         success: true,
@@ -10,7 +9,6 @@ export default {
       });
     }
 
-    // Booking endpoint
     if (url.pathname === "/api/book" && request.method === "POST") {
       try {
         const data = await request.json();
@@ -25,30 +23,22 @@ export default {
           );
         }
 
-        const name = data.name;
-        const email = data.email;
-        const phone = data.phone;
-        const service = data.service || "Not specified";
-        const date = data.date || "Not specified";
-        const time = data.time || "Not specified";
-        const notes = data.notes || "None";
-
         const emailText = `
 New X-ACU Booking Request
 
-Name: ${name}
-Email: ${email}
-Phone: ${phone}
+Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone}
 
-Service: ${service}
-Preferred Date: ${date}
-Preferred Time: ${time}
+Service: ${data.service || "Not specified"}
+Preferred Date: ${data.date || "Not specified"}
+Preferred Time: ${data.time || "Not specified"}
 
 Additional Information:
-${notes}
+${data.notes || "None"}
 `;
 
-        const resendResponse = await fetch(
+        const response = await fetch(
           "https://api.resend.com/emails",
           {
             method: "POST",
@@ -59,23 +49,23 @@ ${notes}
             body: JSON.stringify({
               from: "X-ACU Booking <booking@x-acu.com>",
               to: ["X-ACU@Hotmail.com"],
-              subject: `New X-ACU Booking Request - ${name}`,
+              subject: `New X-ACU Booking Request - ${data.name}`,
               text: emailText
             })
           }
         );
 
-        const resendText = await resendResponse.text();
+        const result = await response.text();
 
-        console.log("RESEND STATUS:", resendResponse.status);
-        console.log("RESEND RESPONSE:", resendText);
+        console.log("RESEND STATUS:", response.status);
+        console.log("RESEND RESPONSE:", result);
 
-        if (!resendResponse.ok) {
+        if (!response.ok) {
           return Response.json(
             {
               success: false,
-              error: "Email could not be sent",
-              details: resendText
+              error: "Resend rejected the email",
+              details: result
             },
             { status: 500 }
           );
@@ -83,12 +73,11 @@ ${notes}
 
         return Response.json({
           success: true,
-          message: "Booking request received and email sent",
-          resend: resendText
+          message: "Booking request received and email sent"
         });
 
       } catch (error) {
-        console.error("BOOKING ERROR:", error);
+        console.error("BOOKING ERROR:", String(error));
 
         return Response.json(
           {
