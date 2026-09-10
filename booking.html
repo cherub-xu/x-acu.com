@@ -1046,73 +1046,140 @@
 
 
     /*
-      Temporary booking action.
+  Send booking request to Cloudflare Worker.
+*/
 
-      IMPORTANT:
+bookButton.addEventListener("click", async function() {
 
-      This is only the FRONT-END stage.
+  const name =
+    document.getElementById("fullName").value.trim();
 
-      It does NOT yet save a booking
-      to a database.
+  const email =
+    document.getElementById("email").value.trim();
 
-      The next stage will connect this button
-      to Cloudflare D1 so that appointments
-      are actually stored and double booking
-      is prevented.
-    */
+  const phone =
+    document.getElementById("phone").value.trim();
 
-    bookButton.addEventListener("click", function() {
-
-      const name =
-        document.getElementById("fullName").value.trim();
-
-      const email =
-        document.getElementById("email").value.trim();
-
-      const phone =
-        document.getElementById("phone").value.trim();
+  const notes =
+    document.getElementById("notes").value.trim();
 
 
-      if (
-        !selectedService ||
-        !selectedDate ||
-        !selectedTime ||
-        !name ||
-        !email ||
-        !phone
-      ) {
+  if (
+    !selectedService ||
+    !selectedDate ||
+    !selectedTime ||
+    !name ||
+    !email ||
+    !phone
+  ) {
 
-        bookingMessage.className =
-          "message error show";
+    bookingMessage.className =
+      "message error show";
 
-        bookingMessage.textContent =
-          "Please complete all required fields before requesting an appointment.";
+    bookingMessage.textContent =
+      "Please complete all required fields before requesting an appointment.";
 
-        return;
-
-      }
-
-
-      bookingMessage.className =
-        "message success show";
-
-      bookingMessage.innerHTML =
-        "<strong>Appointment request received.</strong><br><br>" +
-        "Thank you, " + escapeHtml(name) + ". " +
-        "Your selected appointment is " +
-        formatDate(selectedDate) +
-        " at " +
-        formatTime(selectedTime) +
-        ".<br><br>" +
-        "This page is currently in setup mode. " +
-        "The appointment will be connected to the X-ACU booking database in the next step.";
+    return;
+  }
 
 
-      bookingMessage.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
+  bookButton.disabled = true;
+
+  bookButton.textContent =
+    "SENDING...";
+
+
+  bookingMessage.className =
+    "message info show";
+
+  bookingMessage.textContent =
+    "Sending your appointment request...";
+
+
+  try {
+
+    const response =
+      await fetch("/api/book", {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+          name: name,
+
+          email: email,
+
+          phone: phone,
+
+          service: selectedService.name,
+
+          date: selectedDate,
+
+          time: selectedTime,
+
+          notes: notes
+
+        })
+
       });
 
+
+    const result =
+      await response.json();
+
+
+    if (!response.ok || !result.success) {
+
+      throw new Error(
+        result.error || "Booking request failed"
+      );
+
+    }
+
+
+    bookingMessage.className =
+      "message success show";
+
+    bookingMessage.innerHTML =
+      "<strong>Appointment request received.</strong><br><br>" +
+      "Thank you, " + escapeHtml(name) + ". " +
+      "Your selected appointment is " +
+      formatDate(selectedDate) +
+      " at " +
+      formatTime(selectedTime) +
+      ".<br><br>" +
+      "We will contact you to confirm your appointment.";
+
+
+    bookingMessage.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+
+    bookButton.textContent =
+      "REQUEST SENT";
+
+  } catch (error) {
+
+    bookingMessage.className =
+      "message error show";
+
+    bookingMessage.textContent =
+      "Sorry, we could not send your appointment request. Please try again.";
+
+    bookButton.disabled = false;
+
+    bookButton.textContent =
+      "REQUEST APPOINTMENT";
+
+  }
+
+});
     });
 
 
