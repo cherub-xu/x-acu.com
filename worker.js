@@ -1,7 +1,7 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
- 
+
     // Test endpoint
     if (url.pathname === "/api/test") {
       return Response.json({
@@ -65,47 +65,50 @@ ${notes}
           }
         );
 
+        const resendText = await resendResponse.text();
+
+        console.log("RESEND STATUS:", resendResponse.status);
+        console.log("RESEND RESPONSE:", resendText);
+
         if (!resendResponse.ok) {
-  const errorText = await resendResponse.text();
-
-  console.error("RESEND ERROR:", errorText);
-
-  return Response.json(
-    {
-      success: false,
-      error: "Email could not be sent",
-      details: errorText
-    },
-    { status: 500 }
-  );
-}
+          return Response.json(
+            {
+              success: false,
+              error: "Email could not be sent",
+              details: resendText
+            },
+            { status: 500 }
+          );
+        }
 
         return Response.json({
           success: true,
-          message: "Booking request received and email sent"
+          message: "Booking request received and email sent",
+          resend: resendText
         });
 
       } catch (error) {
+        console.error("BOOKING ERROR:", error);
+
         return Response.json(
           {
             success: false,
-            error: "Invalid request"
+            error: "Booking system error",
+            details: String(error)
           },
-          { status: 400 }
+          { status: 500 }
         );
       }
     }
 
     const page = await fetch(
-  "https://raw.githubusercontent.com/cherub-xu/x-acu.com/main/booking.html"
-);
+      "https://raw.githubusercontent.com/cherub-xu/x-acu.com/main/booking.html"
+    );
 
-return new Response(page.body, {
-  headers: {
-    "content-type": "text/html; charset=UTF-8"
-  }
-});
+    return new Response(page.body, {
+      headers: {
+        "content-type": "text/html; charset=UTF-8"
+      }
+    });
   }
 };
-
-// Trigger Cloudflare redeploy
