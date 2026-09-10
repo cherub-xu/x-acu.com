@@ -1,6 +1,12 @@
 {
   "name": "x-acu-com",
+  "main": "worker.js",
   "compatibility_date": "2026-09-08",
+
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "."
+  },
 
   "d1_databases": [
     {
