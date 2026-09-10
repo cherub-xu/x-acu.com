@@ -66,17 +66,19 @@ ${notes}
         );
 
         if (!resendResponse.ok) {
-          const errorText = await resendResponse.text();
+  const errorText = await resendResponse.text();
 
-          return Response.json(
-            {
-              success: false,
-              error: "Email could not be sent",
-              details: errorText
-            },
-            { status: 500 }
-          );
-        }
+  console.error("RESEND ERROR:", errorText);
+
+  return Response.json(
+    {
+      success: false,
+      error: "Email could not be sent",
+      details: errorText
+    },
+    { status: 500 }
+  );
+}
 
         return Response.json({
           success: true,
